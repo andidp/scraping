@@ -57,16 +57,13 @@ if __name__ == "__main__":
         print(f"Scraping category: {cat_name}")
         books = get_books_from_category(cat_name, cat_url)
         all_data.extend(books)
-        
+            
     df = pd.DataFrame(all_data)
-    
-    # print("=== Raw data (Scraping) ===")
-    # print(df.head())
 
     # === DATA CLEANING ===
     # 1. Clean column price → to float format
     df["Price"] = df["Price"].str.replace("£", "").str.encode("ascii", "ignore").str.decode("ascii").str.replace(r"[^0-9.]", "", regex=True).astype(float)
-
+    
     # 2. Trim whitespace in all text columns
     df["Title"] = df["Title"].str.strip()
     df["Availability"] = df["Availability"].str.strip()
@@ -74,11 +71,8 @@ if __name__ == "__main__":
     # 3. Delete duplicate
     df = df.drop_duplicates()
 
-    # 4. fill empty cell with "N/A"
+    # 4. Fill empty cell with "N/A"
     df = df.fillna("N/A")
-
-    # print("\n=== Data after cleaning ===")
-    # print(df.head())
 
     # === EXPORT TO EXCEL ===
     df.to_excel("data/books_with_category_scraped_clean.xlsx", index=False)
