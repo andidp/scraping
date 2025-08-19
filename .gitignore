@@ -146,3 +146,4 @@ venv.bak/
 .mypy_cache/
 
 .DS_Store
+.~lock*
